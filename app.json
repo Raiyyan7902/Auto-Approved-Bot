@@ -31,7 +31,7 @@
         },
         "APPROVED_WELCOME": {
             "description": "APPROVED_WELCOME On Or Off",
-            "value": "on"
+            "value": "off"
         },
         "APPROVED_WELCOME_TEXT": {
             "description": "APPROVED_WELCOME_TEXT : Welcome Text",
