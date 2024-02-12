@@ -9,7 +9,8 @@ pr0fess0r_99 = Client(
     api_hash=environ["API_HASH"]
 )
 
-CHAT_ID = [int(pr0fess0r_99) for pr0fess0r_99 in environ.get("CHAT_ID", None).split()]
+# Corrected CHAT_ID assignment
+CHAT_ID = [int(chat_id) for chat_id in environ.get("CHAT_ID", "").split()]
 TEXT = environ.get("APPROVED_WELCOME_TEXT", "Hello {mention}\nWelcome To {title}\n\nYour Auto Approved")
 APPROVED = environ.get("APPROVED_WELCOME", "on").lower()
 
