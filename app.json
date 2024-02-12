@@ -15,11 +15,11 @@
     "env": {
         "API_ID": {
             "description": "Your APP ID From https://youtu.be/5eEsvLAKVc0 or @MT_MyTelegramOrg_Bot",
-            "value": ""
+            "value": "25169937"
         },
         "API_HASH": {
             "description": "Your API Hash From https://youtu.be/5eEsvLAKVc0 or @MT_MyTelegramOrg_Bot",
-            "value": ""
+            "value": "503c083ca52e6e33186807a45ab9f26e"
         },
         "BOT_TOKEN": {
             "description": "Your Bot Token From @BotFather",
