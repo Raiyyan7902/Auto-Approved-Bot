@@ -2,19 +2,23 @@ from os import environ
 from pyrogram import Client, filters
 from pyrogram.types import Message, ChatJoinRequest
 
-pr0fess0r_99 = Client(
-    "Auto Approved Bot",
-    bot_token=environ["BOT_TOKEN"],
-    api_id=int(environ["API_ID"]),
-    api_hash=environ["API_HASH"]
-)
+# Bot configuration
+BOT_TOKEN = "6937206714:AAFdi2NwxQZA5f6WKrnCGLIPa9wojdkDCvI"
+API_ID = 25169937
+API_HASH = "503c083ca52e6e33186807a45ab9f26e"
+CHAT_ID = -1002102578852
+APPROVED_WELCOME_TEXT = "Hello {mention}\nWelcome To {title}\n\nYour Auto Approved"
+APPROVED_WELCOME = "off"
+PRIVATE_CHANNEL_ID = -1002102578852
+OWNER_ID = 6855499938
 
-# Corrected CHAT_ID assignment
-CHAT_ID = [int(chat_id) for chat_id in environ.get("CHAT_ID", "").split()]
-TEXT = environ.get("APPROVED_WELCOME_TEXT", "Hello {mention}\nWelcome To {title}\n\nYour Auto Approved")
-APPROVED = environ.get("APPROVED_WELCOME", "on").lower()
+# Initialize Client
+pr0fess0r_99 = Client("Auto Approved Bot", bot_token=BOT_TOKEN, api_id=API_ID, api_hash=API_HASH)
 
+# Set of bot administrators
 admins = set()
+
+# Set of approved channels/groups
 approved_channels = set()
 
 @pr0fess0r_99.on_message(filters.private & filters.command(["start"]))
@@ -28,13 +32,13 @@ async def autoapprove(client: pr0fess0r_99, message: ChatJoinRequest):
     print(f"{user.first_name} Joined 🤝")
     await client.approve_chat_join_request(chat_id=chat.id, user_id=user.id)
     if APPROVED == "on":
-        await client.send_message(chat_id=chat.id, text=TEXT.format(mention=user.mention, title=chat.title))
-    await client.send_message(chat_id=-1002042107544, text=f"{user.first_name} joined {chat.title}")
+        await client.send_message(chat_id=chat.id, text=APPROVED_WELCOME_TEXT.format(mention=user.mention, title=chat.title))
+    await client.send_message(chat_id=PRIVATE_CHANNEL_ID, text=f"{user.first_name} joined {chat.title}")
 
 @pr0fess0r_99.on_message(filters.private & filters.command(["addadmin"]))
 async def add_admin(client: pr0fess0r_99, message: Message):
-    if message.from_user.id not in admins:
-        await client.send_message(chat_id=message.chat.id, text="Only bot administrators can use this command.")
+    if message.from_user.id != OWNER_ID:
+        await client.send_message(chat_id=message.chat.id, text="Only the bot owner can use this command.")
         return
     try:
         user_id = int(message.text.split()[1])
@@ -45,8 +49,8 @@ async def add_admin(client: pr0fess0r_99, message: Message):
 
 @pr0fess0r_99.on_message(filters.private & filters.command(["addchannelorgroup"]))
 async def add_channel_or_group(client: pr0fess0r_99, message: Message):
-    if message.from_user.id not in admins:
-        await client.send_message(chat_id=message.chat.id, text="Only bot administrators can use this command.")
+    if message.from_user.id != OWNER_ID:
+        await client.send_message(chat_id=message.chat.id, text="Only the bot owner can use this command.")
         return
     try:
         chat_id = int(message.text.split()[1])
