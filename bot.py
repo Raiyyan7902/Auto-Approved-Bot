@@ -47,15 +47,27 @@ async def add_admin(client: pr0fess0r_99, message: Message):
     except (IndexError, ValueError):
         await client.send_message(chat_id=message.chat.id, text="Invalid command usage.")
 
-@pr0fess0r_99.on_message(filters.private & filters.command(["addchannelorgroup"]))
-async def add_channel_or_group(client: pr0fess0r_99, message: Message):
+@pr0fess0r_99.on_message(filters.private & filters.command(["addchannel"]))
+async def add_channel(client: pr0fess0r_99, message: Message):
     if message.from_user.id != OWNER_ID:
         await client.send_message(chat_id=message.chat.id, text="Only the bot owner can use this command.")
         return
     try:
         chat_id = int(message.text.split()[1])
         approved_channels.add(chat_id)
-        await client.send_message(chat_id=message.chat.id, text=f"Channel or group with ID {chat_id} has been added.")
+        await client.send_message(chat_id=message.chat.id, text=f"Channel with ID {chat_id} has been added to the approved list.")
+    except (IndexError, ValueError):
+        await client.send_message(chat_id=message.chat.id, text="Invalid command usage.")
+
+@pr0fess0r_99.on_message(filters.private & filters.command(["addgroup"]))
+async def add_group(client: pr0fess0r_99, message: Message):
+    if message.from_user.id != OWNER_ID:
+        await client.send_message(chat_id=message.chat.id, text="Only the bot owner can use this command.")
+        return
+    try:
+        chat_id = int(message.text.split()[1])
+        approved_channels.add(chat_id)
+        await client.send_message(chat_id=message.chat.id, text=f"Group with ID {chat_id} has been added to the approved list.")
     except (IndexError, ValueError):
         await client.send_message(chat_id=message.chat.id, text="Invalid command usage.")
 
