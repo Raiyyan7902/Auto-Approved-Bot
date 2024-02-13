@@ -54,7 +54,7 @@ async def add_channel(client: pr0fess0r_99, message: Message):
         return
     try:
         chat_id = int(message.text.split()[1])
-        approved_channels.add(chat_id)
+        approved_channels.add(('channel', chat_id))
         await client.send_message(chat_id=message.chat.id, text=f"Channel with ID {chat_id} has been added to the approved list.")
     except (IndexError, ValueError):
         await client.send_message(chat_id=message.chat.id, text="Invalid command usage.")
@@ -66,7 +66,7 @@ async def add_group(client: pr0fess0r_99, message: Message):
         return
     try:
         chat_id = int(message.text.split()[1])
-        approved_channels.add(chat_id)
+        approved_channels.add(('group', chat_id))
         await client.send_message(chat_id=message.chat.id, text=f"Group with ID {chat_id} has been added to the approved list.")
     except (IndexError, ValueError):
         await client.send_message(chat_id=message.chat.id, text="Invalid command usage.")
