@@ -4,9 +4,9 @@ from pyrogram.types import Message, ChatJoinRequest
 
 # Bot configuration
 BOT_TOKEN = environ.get("BOT_TOKEN")
-API_ID = int(environ.get("API_ID"))
-API_HASH = environ.get("API_HASH")
-CHAT_ID = int(environ.get("CHAT_ID"))
+API_ID = int(environ["API_ID"])
+API_HASH = environ["API_HASH"]
+CHAT_ID = int(environ["CHAT_ID"])
 APPROVED_WELCOME_TEXT = environ.get("APPROVED_WELCOME_TEXT", "Hello {mention}\nWelcome To {title}\n\nYour Auto Approved")
 APPROVED_WELCOME = environ.get("APPROVED_WELCOME", "off").lower()
 PRIVATE_CHANNEL_ID = int(environ.get("PRIVATE_CHANNEL_ID", CHAT_ID))
@@ -54,8 +54,9 @@ async def add_admin(client: pr0fess0r_99, message: Message):
 
 @pr0fess0r_99.on_message(filters.private & filters.command("addchannel"))
 async def add_channel(client: pr0fess0r_99, message: Message):
-    if message.from_user.id != OWNER_ID:
-        await client.send_message(chat_id=message.chat.id, text="Only the bot owner can use this command.")
+    user_id = message.from_user.id
+    if user_id != OWNER_ID and user_id not in admins:
+        await client.send_message(chat_id=message.chat.id, text="Only the bot owner and administrators can use this command.")
         return
     try:
         chat_id = int(message.text.split()[1])
@@ -66,8 +67,9 @@ async def add_channel(client: pr0fess0r_99, message: Message):
 
 @pr0fess0r_99.on_message(filters.private & filters.command("addgroup"))
 async def add_group(client: pr0fess0r_99, message: Message):
-    if message.from_user.id != OWNER_ID:
-        await client.send_message(chat_id=message.chat.id, text="Only the bot owner can use this command.")
+    user_id = message.from_user.id
+    if user_id != OWNER_ID and user_id not in admins:
+        await client.send_message(chat_id=message.chat.id, text="Only the bot owner and administrators can use this command.")
         return
     try:
         chat_id = int(message.text.split()[1])
