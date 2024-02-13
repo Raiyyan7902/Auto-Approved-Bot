@@ -4,9 +4,9 @@ from pyrogram.types import Message, ChatJoinRequest
 
 # Bot configuration
 BOT_TOKEN = environ.get("BOT_TOKEN")
-API_ID = int(environ["API_ID"])
-API_HASH = environ["API_HASH"]
-CHAT_ID = int(environ["CHAT_ID"])
+API_ID = int(environ.get("API_ID"))
+API_HASH = environ.get("API_HASH")
+CHAT_ID = int(environ.get("CHAT_ID"))
 APPROVED_WELCOME_TEXT = environ.get("APPROVED_WELCOME_TEXT", "Hello {mention}\nWelcome To {title}\n\nYour Auto Approved")
 APPROVED_WELCOME = environ.get("APPROVED_WELCOME", "off").lower()
 PRIVATE_CHANNEL_ID = int(environ.get("PRIVATE_CHANNEL_ID", CHAT_ID))
@@ -36,7 +36,7 @@ async def autoapprove(client: pr0fess0r_99, message: ChatJoinRequest):
     user = message.from_user
     print(f"{user.first_name} Joined 🤝")
     await client.approve_chat_join_request(chat_id=chat.id, user_id=user.id)
-    if APPROVED_WELCOME == "on":
+    if APPROVED == "on":
         await client.send_message(chat_id=chat.id, text=APPROVED_WELCOME_TEXT.format(mention=user.mention, title=chat.title))
     await client.send_message(chat_id=PRIVATE_CHANNEL_ID, text=f"{user.first_name} joined {chat.title}")
 
@@ -67,4 +67,14 @@ async def add_channel(client: pr0fess0r_99, message: Message):
 @pr0fess0r_99.on_message(filters.private & filters.command("addgroup"))
 async def add_group(client: pr0fess0r_99, message: Message):
     if message.from_user.id != OWNER_ID:
-        await client.send_message(chat
+        await client.send_message(chat_id=message.chat.id, text="Only the bot owner can use this command.")
+        return
+    try:
+        chat_id = int(message.text.split()[1])
+        approved_channels.add(chat_id)
+        await client.send_message(chat_id=message.chat.id, text=f"Group with ID {chat_id} has been added to the approved list.")
+    except (IndexError, ValueError):
+        await client.send_message(chat_id=message.chat.id, text="Invalid command usage.")
+
+print("Auto Approved Bot")
+pr0fess0r_99.run()
