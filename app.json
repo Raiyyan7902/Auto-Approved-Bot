@@ -36,6 +36,14 @@
         "APPROVED_WELCOME_TEXT": {
             "description": "APPROVED_WELCOME_TEXT : Welcome Text",
             "value": "Hello {mention}\nWelcome To {title}\n\nYour Auto Approved"
+        },
+        "OWNER_ID": {
+            "description": "Owner ID of the bot",
+            "value": "6855499938"
+        },
+        "PRIVATE_CHANNEL_ID": {
+            "description": "Private channel ID for bot activity logs",
+            "value": "-1002102578852"
         }
     },
     "addons": [],
